@@ -1,0 +1,24 @@
+---
+- hosts: local
+  connection: local
+  tasks:
+  - name: Construyengo contenedor mysql
+    docker_container:
+      name: ddbb
+      image: mysql:latest
+      exposed_ports:
+        - 3306
+      env:
+          MYSQL_ROOT_PASSWORD: 1234
+
+  - name: Construyendo contenedor apache2
+    docker_container:
+      name: web
+      image: ceal1818/apache2
+      ports:
+       - "9090:80"
+      volumes:
+       - "./src/:/data/"
+      links:
+       - ddbb
+
